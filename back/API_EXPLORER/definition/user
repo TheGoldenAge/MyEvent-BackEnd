@@ -1,0 +1,434 @@
+{
+  "apiVersion": "1.0.0",
+  "swaggerVersion": "1.2",
+  "apis": [
+    {
+      "path": "/v1/user/existLogin/{login}",
+      "operations": [
+        {
+          "method": "GET",
+          "summary": "existLogin",
+          "notes": "Check if a login exists or not in database",
+          "nickname": "existLogin",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "login": "login",
+              "description": "user's login",
+              "paramType": "path",
+              "name": "login",
+              "required": true,
+              "type": "number"
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 200,
+              "message": "Login exists"
+            },
+            {
+              "code": 204,
+              "message": "Login not found"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/register",
+      "operations": [
+        {
+          "method": "POST",
+          "summary": "Register step 1",
+          "notes": "creates a new account and sends a confirmation email to the new user",
+          "nickname": "register Step 1",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "body",
+              "description": "JSON with login, email and password:",
+              "required": true,
+              "type": " {\"login\":\"mylogin\",\"email\":\"myemail\",\"password\":\"mypassword\"}",
+              "paramType": "body",
+              "allowMultiple": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 200,
+              "message": "account created and confirmation email sent"
+            },
+            {
+              "code": 500,
+              "message": "internal error"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/activate/{token}",
+      "operations": [
+        {
+          "method": "PUT",
+          "summary": "Register Step 2 (activation)",
+          "notes": "activate an account",
+          "nickname": "Register Step 2 (activation)",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "token": "token",
+              "description": "Token sent by mail",
+              "paramType": "path",
+              "name": "token",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "message": "'token': 'invalid'"
+            },
+            {
+              "code": 200,
+              "message": "'token': 'invalid'"
+            },
+            {
+              "code": 500,
+              "message": "'token': 'technical_error'"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/resetPassword",
+      "operations": [
+        {
+          "method": "POST",
+          "summary": "Reset Password Step 1",
+          "notes": "freezes the account and generate a confirmation email",
+          "nickname": "resetPassword",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "password": "login",
+              "description": "user's login",
+              "paramType": "body",
+              "name": "login",
+              "required": true,
+              "type": " {\"login\":\"mylogin\"}"
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 200,
+              "message": "Password correctly updated"
+            },
+            {
+              "code": 400,
+              "message": "Error"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/reset/{token}",
+      "operations": [
+        {
+          "method": "GET",
+          "summary": "Reset Password step 2 (validation)",
+          "notes": "validate the token sent by webclient",
+          "nickname": "validateResetPassword",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "token": "token",
+              "description": "Token sent by mail",
+              "paramType": "path",
+              "name": "token",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "password": "login",
+              "description": "user's login/pwd",
+              "paramType": "body",
+              "name": "data",
+              "required": true,
+              "type": " {\"login\":\"mylogin\",\"password\":\"newPassword\"}"
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "message": "'token': 'invalid'"
+            },
+            {
+              "code": 200,
+              "message": "'token': 'invalid'"
+            },
+            {
+              "code": 500,
+              "message": "'token': 'technical_error'"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/info",
+      "operations": [
+        {
+          "method": "GET",
+          "summary": "getUserInfo",
+          "notes": "retrieve email login first/lastname and phoneNumber",
+          "nickname": "getUserInfo",
+          "type": "",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 200,
+              "message": "user info"
+            },
+            {
+              "code": 204,
+              "message": "user not found"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/update",
+      "operations": [
+        {
+          "method": "POST",
+          "summary": "updateUser",
+          "notes": "update the user's account",
+          "nickname": "updateUser",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "body",
+              "description": "JSON with login, firstname,lastname, phone for update :",
+              "required": true,
+              "type": " {\"firstName\":\"test\",\"lastName\":\"test\",\"phone\":\"060606060\"}",
+              "paramType": "body",
+              "allowMultiple": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 500,
+              "message": "Error"
+            },
+            {
+              "code": 200,
+              "message": "User updated"
+            },
+            {
+              "code": 204,
+              "message": "No user found"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/updatePassword",
+      "operations": [
+        {
+          "method": "POST",
+          "summary": "updatePassword",
+          "notes": "update the user's password",
+          "nickname": "updatePassword",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "login": "new password",
+              "description": "user's new password ",
+              "paramType": "body",
+              "name": "password",
+              "required": true,
+              "type": " {\"login\":\"a\",\"password\":\"a\",\"newPassword\":\"newpassword\"}"
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 500,
+              "message": "Error"
+            },
+            {
+              "code": 200,
+              "message": "password upadte"
+            },
+            {
+              "code": 204,
+              "message": "No user found"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/updateMail",
+      "operations": [
+        {
+          "method": "POST",
+          "summary": "updateMail",
+          "notes": "update the user's mail",
+          "nickname": "updateMail",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "login": "new mail",
+              "description": "user's new mail ",
+              "paramType": "body",
+              "name": "mail",
+              "required": true,
+              "type": " {\"login\":\"a\",\"password\":\"a\",\"newMail\":\"newMail\"}"
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 500,
+              "message": "Error"
+            },
+            {
+              "code": 200,
+              "message": "mail upadte"
+            },
+            {
+              "code": 204,
+              "message": "No user found"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/v1/user/updateLogin",
+      "operations": [
+        {
+          "method": "POST",
+          "summary": "updateLogin",
+          "notes": "update the user's login",
+          "nickname": "updateLogin",
+          "type": "array",
+          "items": {},
+          "authorizations": {},
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "login": "new login",
+              "description": "user's new login ",
+              "paramType": "body",
+              "name": "login",
+              "required": true,
+              "type": " {\"login\":\"a\",\"password\":\"a\",\"newLogin\":\"newlogin\"}"
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 500,
+              "message": "Error"
+            },
+            {
+              "code": 200,
+              "message": "password upadte"
+            },
+            {
+              "code": 204,
+              "message": "No user found"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

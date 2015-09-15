@@ -1,0 +1,43 @@
+{
+  "apiVersion": "1.0.0",
+  "swaggerVersion": "1.2",
+  "authorizations": {},
+  "apis": [
+    {
+      "path": "/v1/login",
+      "operations": [
+        {
+          "method": "POST",
+          "summary": "login user",
+          "notes": "login provides access token needed to all other APIs",
+          "nickname": "Login",
+          "produces": [
+            "application/json"
+          ],
+          "isweb" : "1",
+          "parameters": [
+            {
+              "name": "body",
+              "description": "JSON with username and password for authentication :",
+              "required": true,
+              "type": " {\"username\":\"a\",\"password\":\"a\"}",
+              "paramType": "body",
+              "allowMultiple": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "message": "application message"
+            },
+            {
+              "code": 401,
+              "message": "error message"
+            }
+          ]
+
+        }
+      ]
+    }
+  ]
+}

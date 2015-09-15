@@ -1,0 +1,68 @@
+{
+    "apiVersion": "1.0.0",
+    "swaggerVersion": "1.2",
+    "apis": [
+        {
+            "path": "/apiSwagger/definition/auth",
+            "description": "User authentication"
+        },
+        {
+            "path": "/apiSwagger/definition/libraryViewV1",
+            "description": "Operations about library V1, userID in Cookie"
+        },
+        {
+            "path": "/apiSwagger/definition/user",
+            "description": "Operations about users"
+        },
+        {
+            "path": "/apiSwagger/definition/cover",
+            "description": "Operations about cover/filer"
+        }
+
+    ],
+    "authorizations": {
+        "oauth2":{
+            "type":"oauth2",
+            "scopes": [
+                {
+                    "scope": "write:applications",
+                    "description": "Create and modify applications"
+                },
+                {
+                    "scope": "read:applications",
+                    "description": "Get applications"
+                }
+                ],
+            "grantTypes":{
+                "implicit":{
+                    "loginEndPoint":{
+                        "url:":"http://localhost:3000/login"
+                    },
+                    "tokenName":"access_token"
+
+                }
+            }
+        }
+    },
+    "info": {
+        "title": "DCL API Explorer",
+        "description": "This is the specifications and testbed for DCL API. ",
+        "termsOfServiceUrl": "http://helloreverb.com/terms/",
+        "contact": "apiteam@wordnik.com",
+        "license": "Apache 2.0",
+        "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "models": {
+        "Error": {
+            "id": "Error",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
