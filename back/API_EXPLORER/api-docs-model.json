@@ -7,18 +7,9 @@
             "description": "User authentication"
         },
         {
-            "path": "/apiSwagger/definition/libraryViewV1",
-            "description": "Operations about library V1, userID in Cookie"
-        },
-        {
             "path": "/apiSwagger/definition/user",
             "description": "Operations about users"
-        },
-        {
-            "path": "/apiSwagger/definition/cover",
-            "description": "Operations about cover/filer"
         }
-
     ],
     "authorizations": {
         "oauth2":{
@@ -45,10 +36,10 @@
         }
     },
     "info": {
-        "title": "DCL API Explorer",
-        "description": "This is the specifications and testbed for DCL API. ",
+        "title": "MyEvent API Explorer",
+        "description": "This is the specifications and testbed for MyEvent API. ",
         "termsOfServiceUrl": "http://helloreverb.com/terms/",
-        "contact": "apiteam@wordnik.com",
+        "contact": "sergedorh@gmail.com",
         "license": "Apache 2.0",
         "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },

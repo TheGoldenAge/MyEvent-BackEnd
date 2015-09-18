@@ -3,7 +3,7 @@
   "swaggerVersion": "1.2",
   "apis": [
     {
-      "path": "/v1/user/existLogin/{login}",
+      "path": "/api/user/existLogin/{login}",
       "operations": [
         {
           "method": "GET",
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "path": "/v1/user/register",
+      "path": "/api/user/register",
       "operations": [
         {
           "method": "POST",
@@ -85,7 +85,7 @@
       ]
     },
     {
-      "path": "/v1/user/activate/{token}",
+      "path": "/api/user/activate/{token}",
       "operations": [
         {
           "method": "PUT",
@@ -126,7 +126,7 @@
       ]
     },
     {
-      "path": "/v1/user/resetPassword",
+      "path": "/api/user/resetPassword",
       "operations": [
         {
           "method": "POST",
@@ -167,7 +167,7 @@
       ]
     },
     {
-      "path": "/v1/user/reset/{token}",
+      "path": "/api/user/reset/{token}",
       "operations": [
         {
           "method": "GET",
@@ -220,7 +220,7 @@
       ]
     },
     {
-      "path": "/v1/user/info",
+      "path": "/api/user/info",
       "operations": [
         {
           "method": "GET",
@@ -251,7 +251,7 @@
       ]
     },
     {
-      "path": "/v1/user/update",
+      "path": "/api/user/update",
       "operations": [
         {
           "method": "POST",
@@ -296,7 +296,7 @@
       ]
     },
     {
-      "path": "/v1/user/updatePassword",
+      "path": "/api/user/updatePassword",
       "operations": [
         {
           "method": "POST",
@@ -341,7 +341,7 @@
       ]
     },
     {
-      "path": "/v1/user/updateMail",
+      "path": "/api/user/updateMail",
       "operations": [
         {
           "method": "POST",
@@ -386,7 +386,7 @@
       ]
     },
     {
-      "path": "/v1/user/updateLogin",
+      "path": "/api/user/updateLogin",
       "operations": [
         {
           "method": "POST",

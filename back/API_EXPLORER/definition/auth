@@ -4,7 +4,7 @@
   "authorizations": {},
   "apis": [
     {
-      "path": "/v1/login",
+      "path": "/api/login",
       "operations": [
         {
           "method": "POST",
