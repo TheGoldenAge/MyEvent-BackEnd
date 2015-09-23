@@ -3,60 +3,63 @@
  */
 var passport        = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
-var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
+//var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
 var mongoose        = require('mongoose');
-var crypto=require('crypto');
-var User            = require('../models/user');
-    mongoose.model('User');
+var User            = mongoose.model('User');
+/*var User            = require('../models/user');
+    mongoose.model('User');*/
+var crypto          = require('crypto');
 var log4js          = require('log4js');
-var logger          = log4js.getLogger();
-
+var logger          = log4js.getLogger('utils/myPassport');
 
 module.exports = function (passport) {
 
     function encryptPassword (password,salt) {
         var encrypred;
         try {
-            encrypred = crypto.createHmac('sha1', salt).update(password).digest('hex')
+            encrypred = crypto.createHmac('sha1', salt).update(password).digest('hex');
             return encrypred
         } catch (err) {
             return ''
         }
     }
 
-    // basic login/password STRATEGY
-
+    // basic username/password STRATEGY
     passport.use('login', new LocalStrategy({
             passReqToCallback : true
         },
         function(req, username, password, done) {
                 // checks in mongodb if this login exists
-                User.findOne({'login': username}, function (err, user) {
+                User.findOne({'username': username}, function (err, user) {
 
                         // In case of any error, return using the done method
                         if (err) {
                             return done(err);
                         }
 
-                        // email does not exist, log error & redirect back
+                        // Username does not exist, log error & redirect back
                         if (!user) {
-                            return done(null, false, {message: 'Invalid username or password'});
+                            logger.debug('User Not Found with username '+ username);
+                            return done(null, false, {message: 'User Not Found.'});
                         }
                         // User exists but wrong password, log the error
                         if (!isValidPassword(user, password)) {
+                            logger.debug('Invalid Password '+ password);
                             return done(null, false, {message: 'Invalid username or password'});
                         }
 
                         // User and password both match, return user from
                         // done method which will be treated like success
                         return done(null, user);
+                        /**/
+
                     }
                 );
         }));
 
     // Google login STRATEGY
 
-    passport.use(new GoogleStrategy({
+    /*passport.use(new GoogleStrategy({
             clientID: "749324401223-elvcan8f5f1qshfku69rb0uv5d14vtvb.apps.googleusercontent.com",
             clientSecret: "lOj0VrIAYlPKbo79M0JNkRlf",
             callbackURL: "http://127.0.0.1:3100/auth/google/callback"
@@ -102,7 +105,7 @@ module.exports = function (passport) {
                     }
                 })
         }
-    ));
+    ));*/
 
     var isValidPassword = function(user, password){
         if (user.password == encryptPassword(password,user.salt))

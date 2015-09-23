@@ -6,15 +6,15 @@ var mongoose    = require('mongoose');
 var moment      = require('moment');
 var conf        = require('./config');
 var log4js      = require('log4js');
-var logger      = log4js.getLogger();
+var logger      = log4js.getLogger('config/mongo.js');
 var handler     = {};
 
 /*Initialize the mongo db connection with the given configuration*/
 var database = {
     "host":"localhost",
     "port":27017,
-    "name":"mean-dev",
-    "url":"mongodb://localhost:27017/mean-dev"
+    "name":"my-event",
+    "url":"mongodb://localhost:27017/my-event"
 };
 var mongodbURL = database.url;
 module.exports.mongodbURL = mongodbURL;
@@ -44,4 +44,10 @@ module.exports.initialize = function() {
 
     // Reconnect when closed
     mongoose.connection.on('disconnected', handler.mongoReconnector)
+};
+
+module.exports.close = function() {
+    mongoose.connection.removeListener('disconnected', handler.mongoReconnector)
+    mongoose.connection.close()
+    logger.info("[" + moment(new Date()).format("YYYY/MM/DD HH:mm:ss") + "] closed db connection")
 }

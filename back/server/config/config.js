@@ -36,10 +36,20 @@ if(currentEnv == 'test'){
                 format: ["development","test", "production"],
                 default: "development",
                 env: "APP_NAME"
+            },
+            // application identity
+            myEvent: {
+                name: {
+                    doc: "name",
+                    format: "*",
+                    default: "MyEvent"
+                },
+                email: {
+                    doc: "email",
+                    format: "email",
+                    default: "my-event@gmail.com"
+                }
             }
-            //confirmation server targeted by registration mail
-
-            //
         });
     }
 

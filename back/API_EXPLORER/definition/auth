@@ -20,7 +20,7 @@
               "name": "body",
               "description": "JSON with username and password for authentication :",
               "required": true,
-              "type": " {\"username\":\"a\",\"password\":\"a\"}",
+              "type": " {\"username\":\"serge\",\"password\":\"12345\"}",
               "paramType": "body",
               "allowMultiple": false
             }

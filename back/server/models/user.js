@@ -1,10 +1,10 @@
 /**
- * Created by TNVL6480 on 30/10/2014.
+ * Created by vedorhto on 11/09/2015.
  */
 
 var mongoose    = require('mongoose');
 var Schema      = mongoose.Schema;
-var misc        = require('../utils/misc.js');
+//var misc        = require('../utils/misc');
 
 // status of a user :
 //      registered : created by not confirmed yet
@@ -13,38 +13,38 @@ var misc        = require('../utils/misc.js');
 //      removed : removed by the user himself
 
 var userSchema = new Schema({
-    _id : {type: Schema.Types.ObjectId , required:true},
-    status: { type: String, required:true},
-    email: { type: String, required:true},
-    login : {type : String, required:true, unique: true},
-    password: { type: String, default: '' },
-    salt: { type: String, default: '' },
-    roles : [{type: String, ref: 'Role'}]
-})
+    _id : {type: Schema.Types.ObjectId , required:true}
+    ,password: { type: String, default: '' }
+    ,email: { type: String, required:true}
+    ,status: { type: String, required:true}
+    ,salt: { type: String, default: '' }
+    ,roles : [{type: String, ref: 'roles'}]
+    ,username : {type : String, required:true, unique: true}
+});
 
 
 var validatePresenceOf = function (value) {
     return value && value.length
 }
 
-userSchema.path('login').validate(function (login) {
-    return login.length
-}, 'Login cannot be blank')
+userSchema.path('username').validate(function (username) {
+    return username.length
+}, 'Username cannot be blank');
 
-userSchema.path('login').validate(function (login, fn) {
-    var User = mongoose.model('User')
+userSchema.path('username').validate(function (username, fn) {
+    var User = mongoose.model('User');
 
     // Check only when it is a new user or when login field is modified
-    if (this.isNew || this.isModified('login')) {
-        User.find({ login: login }).exec(function (err, users) {
-            fn(!err && users.length === 0)
+    if (this.isNew || this.isModified('username')) {
+        User.find({ username: username }).exec(function (err, Users) {
+            fn(!err && Users.length === 0)
         })
     } else fn(true)
-}, 'Login already exists')
+}, 'Login already exists');
 
 userSchema.path('email').validate(function (email) {
     return email.length
-}, 'Email cannot be blank')
+}, 'Email cannot be blank');
 
 
 /*
@@ -130,6 +130,6 @@ userSchema.methods = {
         } catch (err) {
             return ''
         }
-    }}
+    }};
 
 module.exports = mongoose.model('User', userSchema);
