@@ -79,4 +79,9 @@ module.exports = function(app, passport){
         })
   })
 
+  app.get('/api/logout', function(req, res){
+    req.logout();
+    return res.status(200).send('{success: true}')
+  })
+
 };

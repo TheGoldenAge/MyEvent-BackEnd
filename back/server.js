@@ -66,7 +66,7 @@ var enableCORS = function(req, res, next) {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, authorization, isweb, Cookie, Origin,X-Requested-With,Accept, Authorization');
   res.header('Access-Control-Allow-Credentials','true');
-  res.header('Content-Type', 'application/json');
+  //res.header('Content-Type', 'application/json');
   // intercept OPTIONS method
   if ('OPTIONS' == req.method) {
     res.sendStatus(200);
