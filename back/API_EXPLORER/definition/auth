@@ -39,5 +39,31 @@
         }
       ]
     }
+    ,{
+       "path": "/api/auth/google",
+       "operations": [
+         {
+           "method": "GET",
+           "summary": "google login user",
+           "notes": "google login provides access token needed to all other APIs",
+           "nickname": "Google_Authentication",
+           "produces": [
+             "application/json"
+           ],
+           "isweb" : "1",
+           "responseMessages": [
+             {
+               "code": 200,
+               "message": "application message"
+             },
+             {
+               "code": 401,
+               "message": "error message"
+             }
+           ]
+
+         }
+       ]
+    }
   ]
 }

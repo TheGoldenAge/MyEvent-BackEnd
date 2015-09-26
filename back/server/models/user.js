@@ -19,7 +19,8 @@ var userSchema = new Schema({
     ,status: { type: String, required:true}
     ,salt: { type: String, default: '' }
     ,roles : [{type: String, ref: 'roles'}]
-    ,username : {type : String, required:true, unique: true}
+    ,username : {type : String, required:true, unique: true},
+    oauthID:{type:Number, default: ''}
 });
 
 

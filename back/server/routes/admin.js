@@ -50,6 +50,13 @@ module.exports = function(app, passport){
         //return res.status(403).json(misc.code2json(req,'ERR00003')); // Account not active
       }
 
+      //If email already existe in Database
+      user.findOne({'email': user.email}, function(err){
+        if(err){
+          return res.status(403).send({ success: false, message:'email already exist in the database.'});
+        }
+      });
+
       req.logIn(user, function(err) {
         if (err) {
           return next(err);
@@ -77,11 +84,33 @@ module.exports = function(app, passport){
           if (err) logger.error('user.findById err= '+ err.msg);
           res.status(200).json(user)
         })
-  })
+  });
 
   app.get('/api/logout', function(req, res){
     req.logout();
     return res.status(200).send('{success: true}')
-  })
+  });
+
+  //Google oauth
+  //app.get('/api/auth/google', passport.authenticate('google',{scope:['https://www.googleapis.com/auth/userinfo.profile']}));
+  //app.get('/api/auth/google', passport.authenticate('google',{scope:['https://www.googleapis.com/auth/plus.login']}));
+  app.get('/api/auth/google', passport.authenticate('google',{scope:['https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email ']}));
+  app.get('/api/auth/google/callback', passport.authenticate('google',{failureRedirect: '/api/login'}),function(req, res){
+    //Successful authentication, redirect home
+    //res.redirect('/');
+    return res.status(200).send('{success: true}');
+  });
+
+  //facebook oath
+  app.get('/api/auth/facebook', passport.authenticate('facebook'));
+  app.get('/api/auth/facebook/callback', passport.authenticate('facebook',{failureRedirect:'/api/login'}),function(req, res){
+    return res.status(200).send('{success:true}');
+  });
+
+  //Twitter oath
+  app.get('/api/auth/twitter', passport.authenticate('twitter'));
+  app.get('/api/auth/twitter/callback', passport.authenticate('twitter',{failureRedirect:'/api/login'}),function(req, res){
+    return res.status(200).send('{success:true}');
+  });
 
 };

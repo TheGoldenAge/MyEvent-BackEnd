@@ -46,7 +46,7 @@ describe('testing Login', function ()
     });
 
     // ============== LOGIN =================================//
-    describe('user authentication', function ()
+    /*describe('user authentication', function ()
     {
         it('trying to connect with bad login --> status 401', function (done)
         {
@@ -160,7 +160,7 @@ describe('testing Login', function ()
                     done();
                 });
         });
-    })
+    })*/
 
 
 

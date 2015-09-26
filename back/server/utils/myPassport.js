@@ -3,8 +3,12 @@
  */
 var passport        = require('passport');
 var LocalStrategy   = require('passport-local').Strategy;
-//var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
+var GoogleStrategy  = require('passport-google-oauth').OAuth2Strategy;
+var FacebookStrategy= require('passport-facebook').Strategy;
+var TwitterStrategy = require('passport-twitter').Strategy;
+var oauth           = require('../config/oauth')
 var mongoose        = require('mongoose');
+var ObjectId        = mongoose.Types.ObjectId
 var User            = mongoose.model('User');
 /*var User            = require('../models/user');
     mongoose.model('User');*/
@@ -57,18 +61,21 @@ module.exports = function (passport) {
                 );
         }));
 
-    // Google login STRATEGY
-
-    /*passport.use(new GoogleStrategy({
-            clientID: "749324401223-elvcan8f5f1qshfku69rb0uv5d14vtvb.apps.googleusercontent.com",
-            clientSecret: "lOj0VrIAYlPKbo79M0JNkRlf",
-            callbackURL: "http://127.0.0.1:3100/auth/google/callback"
+    /***************************
+     * Google login STRATEGY
+     * ************************/
+    //var GOOGLE_CLIENT_ID = "278613850359-m9fcb8h6d4dhcms1o1o0i4ahe98fsmgf.apps.googleusercontent.com";
+    //var GOOGLE_CLIENT_SECRET = "SkIGerCWrzpt4VfVV9P5TJEe";
+    passport.use('google',new GoogleStrategy({
+            clientID: oauth.google.clientID,
+            clientSecret: oauth.google.clientSecret,
+            callbackURL: oauth.google.callbackURL
         },
         function(accessToken, refreshToken, profile, done) {
             console.log('profile google = '+JSON.stringify(profile));
             console.log('accesstoKen = '+accessToken);
             console.log('refreshToken = '+refreshToken);
-            User.findOne({ 'google_id' :  profile.id},
+            User.findOne({ 'oauthID' :  profile.id},
                 function(err, user) {
                     // In case of any error, return using the done method
                     if (err) {
@@ -80,7 +87,10 @@ module.exports = function (passport) {
                         console.log('google email does not exist, we try to create the account');
                         var newuser = new User({
                             email: profile.emails[0].value,
-                            google_id: profile.id
+                            username:profile.name.givenName,
+                            status:'active',
+                            oauthID: profile.id,
+                            _id: new ObjectId()
                         });
                         newuser.save(function(err, newuser) {
                             if (err) {
@@ -88,7 +98,7 @@ module.exports = function (passport) {
                                 return done(null, false, { message: 'problem while adding a google account'});
                             } else {
                                 console.error('google account inserted');
-                                User.findOne({ 'google_id' :  profile.id},
+                                User.findOne({ 'oauthID' :  profile.id},
                                     function(err, user) {
                                         // In case of any error, return using the done method
                                         if (err) {
@@ -105,7 +115,35 @@ module.exports = function (passport) {
                     }
                 })
         }
-    ));*/
+    ));
+
+    /***************************
+     * Facebook login STRATEGY
+     * ************************/
+    passport.use('facebook', new FacebookStrategy({
+        clientID:oauth.facebook.clientID,
+        clientSecret:oauth.facebook.clientSecret,
+        callbackURL:oauth.facebook.callbackURL
+    }, function(accessToken, refreshToken, profile, done){
+        console.log('profile facebook = '+JSON.stringify(profile));
+        console.log('accesstoKen = '+accessToken);
+        console.log('refreshToken = '+refreshToken);
+
+    }));
+
+    /***************************
+     * Twitter login STRATEGY
+     * ************************/
+    passport.use('twitter', new TwitterStrategy({
+        consumerKey:oauth.twitter.clientID,
+        consumerSecret:oauth.twitter.clientSecret,
+        callbackURL:oauth.twitter.callbackURL
+    }, function(token, tokenSecret, profile, done){
+        console.log('profile twitter = '+JSON.stringify(profile));
+        console.log('accesstoKen = '+token);
+        console.log('refreshToken = '+tokenSecret);
+
+    }));
 
     var isValidPassword = function(user, password){
         if (user.password == encryptPassword(password,user.salt))
