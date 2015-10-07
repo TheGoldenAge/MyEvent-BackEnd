@@ -85,27 +85,22 @@ module.exports = function (passport) {
                     // google email does not exist, create the account in the dcl db
                     if (!user){
                         console.log('google email does not exist, we try to create the account');
-                        var newuser = new User({
-                            email: profile.emails[0].value,
-                            username:profile.name.givenName,
-                            status:'active',
-                            oauthID: profile.id,
-                            _id: new ObjectId()
+                        var newUser = new User({
+                            email   : profile.emails[0].value,
+                            username: profile.name.givenName,
+                            status  : 'active',
+                            oauthID : profile.id,
+                            _id     : new ObjectId(),
+                            created : Date.now()
                         });
-                        newuser.save(function(err, newuser) {
+                        newUser.save(function(err, newuser) {
                             if (err) {
                                 console.error('problem while adding a google account' + err);
                                 return done(null, false, { message: 'problem while adding a google account'});
                             } else {
                                 console.error('google account inserted');
-                                User.findOne({ 'oauthID' :  profile.id},
-                                    function(err, user) {
-                                        // In case of any error, return using the done method
-                                        if (err) {
-                                            return done(err);
-                                        }
-                                        return done(null, user);
-                                    })
+                                // if successful, return the new user
+                                return done(null, newUser);
                             }
                         });
                     } else {
@@ -123,12 +118,53 @@ module.exports = function (passport) {
     passport.use('facebook', new FacebookStrategy({
         clientID:oauth.facebook.clientID,
         clientSecret:oauth.facebook.clientSecret,
-        callbackURL:oauth.facebook.callbackURL
+        callbackURL:oauth.facebook.callbackURL,
+        profileURL:'https://graph.facebook.com/me?fields=location,first_name,last_name,middle_name,name,link,work,education,gender,timezone,locale,verified,picture,about,address,age_range,bio,birthday,cover,currency,devices,email,favorite_athletes,id,hometown,favorite_teams,inspirational_people,install_type,installed,interested_in,languages,meeting_for,name_format,political,quotes,relationship_status,religion,significant_other,sports,updated_time,website'
     }, function(accessToken, refreshToken, profile, done){
         console.log('profile facebook = '+JSON.stringify(profile));
         console.log('accesstoKen = '+accessToken);
         console.log('refreshToken = '+refreshToken);
 
+        // asynchronous
+        process.nextTick(function() {
+
+            // find the user in the database based on their facebook id
+            User.findOne({ 'oauthID' : profile.id },
+                function(err, user) {
+
+                // if there is an error, stop everything and return that
+                // ie an error connecting to the database
+                if (err)
+                    return done(err);
+
+                // if the user is found, then log them in
+                if (user) {
+                    return done(null, user); // user found, return that user
+                } else {
+                    // if there is no user found with that facebook id, create them
+                    var newUser = new User({
+                        email : profile.emails[0].value, // facebook can return multiple emails so we'll take the first
+                        username:profile.name.givenName,
+                        status:'active',
+                        oauthID: profile.id,
+                        _id: new ObjectId(),
+                        created : Date.now()
+                        //facebook.token : token, // we will save the token that facebook provides to the user
+                        //facebook.name  : profile.name.givenName + ' ' + profile.name.familyName, // look at the passport user profile to see how names are returned
+                    });
+                    // set all of the facebook information in our user model
+                    // save our user to the database
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+
+                        // if successful, return the new user
+                        return done(null, newUser);
+                    });
+                }
+
+            });
+        });
     }));
 
     /***************************

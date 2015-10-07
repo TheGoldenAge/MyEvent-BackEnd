@@ -20,7 +20,8 @@ var userSchema = new Schema({
     ,salt: { type: String, default: '' }
     ,roles : [{type: String, ref: 'roles'}]
     ,username : {type : String, required:true, unique: true},
-    oauthID:{type:Number, default: ''}
+    oauthID:{type:Number, default: ''},
+    created:{type : Date}
 });
 
 
