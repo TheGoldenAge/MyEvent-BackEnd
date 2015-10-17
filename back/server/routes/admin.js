@@ -102,13 +102,13 @@ module.exports = function(app, passport){
   });
 
   //facebook oath
-  app.get('/api/auth/facebook', passport.authenticate('facebook'));
+  app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: 'email'}));
   app.get('/api/auth/facebook/callback', passport.authenticate('facebook',{failureRedirect:'/api/login'}),function(req, res){
     return res.status(200).send('{success:true}');
   });
 
   //Twitter oath
-  app.get('/api/auth/twitter', passport.authenticate('twitter'));
+  app.get('/api/auth/twitter', passport.authenticate('twitter', { scope: 'email'}));
   app.get('/api/auth/twitter/callback', passport.authenticate('twitter',{failureRedirect:'/api/login'}),function(req, res){
     return res.status(200).send('{success:true}');
   });
