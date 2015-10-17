@@ -120,7 +120,8 @@ module.exports = function (passport) {
         clientSecret:oauth.facebook.clientSecret,
         callbackURL:oauth.facebook.callbackURL,
         profileURL:'https://graph.facebook.com/me?fields=location,first_name,last_name,middle_name,name,link,work,education,gender,timezone,locale,verified,picture,about,address,age_range,bio,birthday,cover,currency,devices,email,favorite_athletes,id,hometown,favorite_teams,inspirational_people,install_type,installed,interested_in,languages,meeting_for,name_format,political,quotes,relationship_status,religion,significant_other,sports,updated_time,website'
-    }, function(accessToken, refreshToken, profile, done){
+    },
+        function(accessToken, refreshToken, profile, done){
         console.log('profile facebook = '+JSON.stringify(profile));
         console.log('accesstoKen = '+accessToken);
         console.log('refreshToken = '+refreshToken);
@@ -174,7 +175,8 @@ module.exports = function (passport) {
         consumerKey:oauth.twitter.clientID,
         consumerSecret:oauth.twitter.clientSecret,
         callbackURL:oauth.twitter.callbackURL
-    }, function(token, tokenSecret, profile, done){
+    },
+        function(token, tokenSecret, profile, done){
         console.log('profile twitter = '+JSON.stringify(profile));
         console.log('accesstoKen = '+token);
         console.log('refreshToken = '+tokenSecret);

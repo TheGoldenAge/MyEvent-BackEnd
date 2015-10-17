@@ -35,7 +35,8 @@ if(currentEnv == 'test'){
                 doc: "The application environment.",
                 format: ["development","test", "production"],
                 default: "development",
-                env: "APP_NAME"
+                env: "APP_NAME",
+                MY_SECRET:new Buffer('shhhhhhared-secret', 'base64')
             },
             // application identity
             myEvent: {
@@ -48,6 +49,12 @@ if(currentEnv == 'test'){
                     doc: "email",
                     format: "email",
                     default: "my-event@gmail.com"
+                },
+                // token expiration time (in milliseconds)
+                token_deadline: {
+                    doc: "token expiration time",
+                    format: "int",
+                    default: 172800000 // 2 days
                 }
             }
         });

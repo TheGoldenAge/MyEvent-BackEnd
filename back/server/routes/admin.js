@@ -9,6 +9,8 @@ var misc                    = require('../utils/misc');
 var url                     = require('url');
 var log4js                  = require('log4js');
 var logger                  = log4js.getLogger('routes/admin.js');
+var jwt                     = require("jsonwebtoken");
+var expressJwt              = require("express-jwt");
 
 module.exports = function(app, passport){
 
@@ -51,7 +53,7 @@ module.exports = function(app, passport){
       }
 
       //If email already existe in Database
-      user.findOne({'email': user.email}, function(err){
+      User.findOne({'email': user.email}, function(err){
         if(err){
           return res.status(403).send({ success: false, message:'email already exist in the database.'});
         }
@@ -70,6 +72,11 @@ module.exports = function(app, passport){
           req.session.cookie.maxAge = null; //
         }*/
         //return res.status(200).send({success: true});
+
+        //Authenticate with token
+        ////if user is found and password is right create a token
+        //var token = jwt.sign();
+
         return res.status(200).send();
 
       });

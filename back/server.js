@@ -19,6 +19,8 @@ var mongoose      = require('mongoose');
 var MongoStore    = require('connect-mongo')(session);
 var passport      = require('passport');
 var mongoConfig   = require('./server/config/mongo');
+var jwt           = require("jsonwebtoken");
+var expressJwt    = require("express-jwt");
 
 require('./server/models/user');
 
@@ -55,8 +57,10 @@ function normalizePort(val) {
 app.setupVariables = function(){
   app.ipaddress = process.env.NODEJS_IP || "127.0.0.1";
   app.port = normalizePort(process.env.NODEJS_PORT || 3100);
+  app.superSecret = process.env.MY_SECRET;//secret variable
 };
 app.setupVariables();
+var SECRET = app.superSecret;
 
 //CORS defenition
 var corsDomain = ''
@@ -64,7 +68,7 @@ var enableCORS = function(req, res, next) {
   corsDomain = req.headers.origin //  affect with origin url  LOAD BALANCING DEMO : CHECK IF PROBE IS OK
   res.header('Access-Control-Allow-Origin', corsDomain);
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, authorization, isweb, Cookie, Origin,X-Requested-With,Accept, Authorization');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, isweb, Cookie, Origin,X-Requested-With,Accept, Authorization');
   res.header('Access-Control-Allow-Credentials','true');
   //res.header('Content-Type', 'application/json');
   // intercept OPTIONS method
@@ -169,7 +173,7 @@ fs.readdirSync(routes_path).forEach(function (file) {
 });
 
 
-//module.exports = app;
+
 app.listen(app.port,app.ipaddress, function() {
   logger.info("[" + moment(new Date()).format("YYYY/MM/DD HH:mm:ss") + "] Node server Started on %s:%d...",app.ipaddress,app.port)
 });
@@ -202,3 +206,4 @@ app.use(function(req, res, next){
     res.status(404).sendFile(rootPath+"/pagenotfound.html");
 });
 
+//module.exports = app;
