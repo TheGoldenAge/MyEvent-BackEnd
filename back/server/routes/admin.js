@@ -37,7 +37,7 @@ module.exports = function(app, passport){
     passport.authenticate('login', function(err, user, info){
 
       if (err) {
-        return next(err);
+        return res.status(500).json({err: err});//next(err);
       }
 
       if (!user) {
@@ -61,7 +61,7 @@ module.exports = function(app, passport){
 
       req.logIn(user, function(err) {
         if (err) {
-          return next(err);
+          return res.status(500).json({err: 'Could not log in user'});//next(err);
         }
         /*// if remember me option is checked
         if (req.body.stayLoggedIn == true) {
@@ -77,7 +77,7 @@ module.exports = function(app, passport){
         ////if user is found and password is right create a token
         //var token = jwt.sign();
 
-        return res.status(200).send();
+        return res.status(200).send({status: 'Login successful!'});
 
       });
     })(req, res, next);
@@ -95,7 +95,7 @@ module.exports = function(app, passport){
 
   app.get('/api/logout', function(req, res){
     req.logout();
-    return res.status(200).send('{success: true}')
+    return res.status(200).send({status: 'Bye!'});
   });
 
   //Google oauth
@@ -105,19 +105,19 @@ module.exports = function(app, passport){
   app.get('/api/auth/google/callback', passport.authenticate('google',{failureRedirect: '/api/login'}),function(req, res){
     //Successful authentication, redirect home
     //res.redirect('/');
-    return res.status(200).send('{success: true}');
+    return res.status(200).send({success: true});
   });
 
   //facebook oath
   app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: 'email'}));
   app.get('/api/auth/facebook/callback', passport.authenticate('facebook',{failureRedirect:'/api/login'}),function(req, res){
-    return res.status(200).send('{success:true}');
+    return res.status(200).send({success:true});
   });
 
   //Twitter oath
   app.get('/api/auth/twitter', passport.authenticate('twitter', { scope: 'email'}));
   app.get('/api/auth/twitter/callback', passport.authenticate('twitter',{failureRedirect:'/api/login'}),function(req, res){
-    return res.status(200).send('{success:true}');
+    return res.status(200).send({success:true});
   });
 
 };

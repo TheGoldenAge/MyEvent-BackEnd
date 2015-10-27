@@ -113,7 +113,7 @@ app.use(passport.session());
 
 // pour une expiration fixe : resave:false et rolling:false
 // pour une expiration à fenêtre glissante : resave:true et rolling:true
-/*app.use(session({
+app.use(session({
   secret:'secretDCL',
   cookie : {
     httpOnly: true, // so the client can't access the cookie
@@ -129,9 +129,9 @@ app.use(passport.session());
   rolling: true,
 
   store: new MongoStore({
-    url: mongoConfig.mongoDbUrl
+    url: mongoConfig.mongodbURL
   })
-}));*/
+}));
 
 // configure build passport
 require('./server/utils/myPassport')(passport);
@@ -180,16 +180,12 @@ app.listen(app.port,app.ipaddress, function() {
 
 app.use(function(err, req, res, next){
   if(err.errorIdentifier && err.httpStatus){
-    // error page
-    // TODO translate message
     res.status(err.httpStatus).json({
       status: err.errorIdentifier,
       message: err.message
     })
   }else {
     logger.error(err.stack)
-    // error page
-    // TODO translate message
     res.status(500).json({
       status: '500',
       message: 'the server encountered an error: '+err.toString()
@@ -197,8 +193,6 @@ app.use(function(err, req, res, next){
   }
 });
 app.use(function(req, res, next){
-  // manage specifically get requests on path '/' (for kermit haproxy)
-  // TODO translate pagenotfound.html
   if ((req.method=="GET") && (req.path=="/"))
     res.status(200).sendFile(rootPath+"/pagenotfound.html");
   else

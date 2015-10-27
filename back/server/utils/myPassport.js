@@ -28,6 +28,9 @@ module.exports = function (passport) {
         }
     }
 
+    /***************************
+     * Local login STRATEGY
+     * ************************/
     // basic username/password STRATEGY
     passport.use('login', new LocalStrategy({
             passReqToCallback : true
